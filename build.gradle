@@ -20,5 +20,5 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.team1619:uacr-robot-core:v2020.3.0.0'
+    implementation 'com.github.team1619:uacr-robot-core:2020.3.0.0'
 }
