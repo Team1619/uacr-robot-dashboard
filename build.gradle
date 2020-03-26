@@ -13,6 +13,9 @@ repositories {
 
 allprojects {
     repositories {
+        flatDir{
+            dirs '../jar-files'
+        }
         maven {
             url 'https://jitpack.io'
         }
@@ -21,4 +24,7 @@ allprojects {
 
 dependencies {
     implementation 'com.github.team1619:uacr-robot-core:2020.4.0.2'
+//    implementation (name: 'uacr-robot-core', ext: 'jar')
+
+    implementation (group: 'com.google.guava', name: 'guava', version: '25.1-jre')
 }
