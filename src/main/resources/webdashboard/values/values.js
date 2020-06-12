@@ -1041,19 +1041,22 @@ function updateGamepads() {
         }
         lastDriverButtonValues = buttons;
 
-        let axis = gamepad.axes;
+        let axes = [];
+        for(let axis of gamepad.axes) {
+            axes.push(Math.round(axis * 10) / 10);
+        }
         if (lastDriverAxisValues === null) {
-            lastDriverAxisValues = axis;
-            for (let a of axis) {
-                updateGamepadNumericEvent(gamepad, "driver", axis.indexOf(a), a);
+            lastDriverAxisValues = axes;
+            for (let a of axes) {
+                updateGamepadNumericEvent(gamepad, "driver", axes.indexOf(a), a);
             }
         }
-        for (let a = 0; a < axis.length; a++) {
-            if (lastDriverAxisValues[a] !== axis[a]) {
-                updateGamepadNumericEvent(gamepad, "driver", a, axis[a]);
+        for (let a = 0; a < axes.length; a++) {
+            if (lastDriverAxisValues[a] !== axes[a]) {
+                updateGamepadNumericEvent(gamepad, "driver", a, axes[a]);
             }
         }
-        lastDriverAxisValues = axis;
+        lastDriverAxisValues = axes;
     }
 
     gamepad = gamepads[operatorGamepadIndex];
@@ -1074,19 +1077,22 @@ function updateGamepads() {
         }
         lastOperatorButtonValues = buttons;
 
-        let axis = gamepad.axes;
+        let axes = [];
+        for(let axis of gamepad.axes) {
+            axes.push(Math.round(axis * 10) / 10);
+        }
         if (lastOperatorAxisValues === null) {
-            lastOperatorAxisValues = axis;
-            for (let a of axis) {
-                updateGamepadNumericEvent(gamepad, "operator", axis.indexOf(a), a);
+            lastOperatorAxisValues = axes;
+            for (let a of axes) {
+                updateGamepadNumericEvent(gamepad, "operator", axes.indexOf(a), a);
             }
         }
-        for (let a = 0; a < axis.length; a++) {
-            if (lastOperatorAxisValues[a] !== axis[a]) {
-                updateGamepadNumericEvent(gamepad, "operator", a, axis[a]);
+        for (let a = 0; a < axes.length; a++) {
+            if (lastOperatorAxisValues[a] !== axes[a]) {
+                updateGamepadNumericEvent(gamepad, "operator", a, axes[a]);
             }
         }
-        lastOperatorAxisValues = axis;
+        lastOperatorAxisValues = axes;
     }
 }
 
@@ -1438,4 +1444,3 @@ updateGamepadList();
 
 //Update the gamepads every 200 milliseconds
 setInterval(updateGamepads, 100);
-
