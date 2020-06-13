@@ -45,6 +45,12 @@ public class WebHttpServer {
 				e.close();
 			});
 
+			fHttpServer.createContext("/sim", (e) -> {
+				fullWrite(e, readFile("webdashboard/sim/sim.html"));
+
+				e.close();
+			});
+
 			fHttpServer.start();
 		} catch (Exception e) {
 			e.printStackTrace();

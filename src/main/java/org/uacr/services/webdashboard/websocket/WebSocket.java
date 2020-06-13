@@ -122,23 +122,27 @@ public class WebSocket {
 			}
 
 			@Nullable
-			String message = read();
+			String message = null;
 
-			if (message != null) {
-				if (message.equals("keepalive")) {
-					writeMessage("keepalive");
-					return;
-				}
+			do {
+				message = read();
 
-				for (byte b : message.getBytes()) {
-					if (b < 0) {
-						fServer.onclose(this);
+				if (message != null) {
+					if (message.equals("keepalive")) {
+						writeMessage("keepalive");
 						return;
 					}
-				}
 
-				fServer.onmessage(this, message);
-			}
+					for (byte b : message.getBytes()) {
+						if (b < 0) {
+							fServer.onclose(this);
+							return;
+						}
+					}
+
+					fServer.onmessage(this, message);
+				}
+			} while (message != null);
 		} catch (Exception e) {
 			fServer.onclose(this);
 		}

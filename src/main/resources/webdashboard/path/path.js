@@ -511,7 +511,7 @@ function fill() {
     for (let s = 1; s < waypoints.length; s++) {
         let vector = new Vector(waypoints[s - 1], waypoints[s]);
 
-        let numPointsFit = Math.round(Math.ceil(vector.magnitude() / fSpacing));
+        let numPointsFit = Math.round(Math.ceil(vector.magnitude / fSpacing));
 
         vector = vector.normalize().scale(fSpacing);
 
@@ -540,11 +540,11 @@ function smooth() {
 
             let middle = new Vector(points[i + 1].subtract(points[i - 1]));
 
-            middle = new Vector(points[i - 1].add(middle.normalize().scale(middle.magnitude() / 2)));
+            middle = new Vector(points[i - 1].add(middle.normalize().scale(middle.magnitude / 2)));
 
             let delta = new Vector(middle.subtract(point));
 
-            let newPoint = point.add(delta.normalize().scale(delta.magnitude() * fSmoothing));
+            let newPoint = point.add(delta.normalize().scale(delta.magnitude * fSmoothing));
 
             if (!isNaN(newPoint.x) && !isNaN(newPoint.y)) {
                 newPoints[i] = newPoint;
