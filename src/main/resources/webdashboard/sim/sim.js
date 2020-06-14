@@ -1,8 +1,8 @@
 const refreshRate = 10;
 const robotWidth = 80;
 const robotLength = 120;
-const wheelWidth = 10;
-const wheelLength = 20;
+const wheelWidth = 15;
+const wheelLength = 30;
 const maxModuleAngularVelocity = 2;
 const maxModuleLinearVelocity = 1;
 const wheelHalfWidth = wheelWidth / 2;
@@ -58,34 +58,54 @@ function drawRobot(fr, fl, bl, br) {
     rotate(x, y, -robotAngle);
 
     drawContext.strokeStyle = "#FFFFFF";
-    drawContext.fillStyle = "#FFFFFF";
 
     let frameLeft = y - robotWidth / 2;
     let frameRight = y + robotWidth / 2;
     let frameFront = x + robotLength / 2;
     let frameBack = x - robotLength / 2;
 
-    drawModule(frameRight, frameFront, fr.angle);
-    drawModule(frameLeft, frameFront, fl.angle);
-    drawModule(frameLeft, frameBack, bl.angle);
-    drawModule(frameRight, frameBack, br.angle);
+    drawContext.lineWidth = 6;
+
+    drawModule(frameRight, frameFront, fr);
+    drawModule(frameLeft, frameFront, fl);
+    drawModule(frameLeft, frameBack, bl);
+    drawModule(frameRight, frameBack, br);
+
+    drawContext.lineWidth = 2;
 
     drawContext.strokeStyle = "#999999";
     drawContext.strokeRect(x - robotLength / 2, y - robotWidth / 2, robotLength, robotWidth);
 
     drawContext.strokeStyle = "#FFFF00";
-
     drawContext.beginPath();
     drawContext.moveTo(x + robotLength / 2, y - robotWidth / 2);
     drawContext.lineTo(x + robotLength / 2, y + robotWidth / 2);
     drawContext.stroke();
 }
 
-function drawModule(y, x, angle) {
-    angle = -angle
+function drawModule(y, x, vector) {
+    let speed = vector.magnitude;
+    let angle = -vector.angle;
+
     rotate(x, y, angle);
+
+    if(speed > 0) {
+        drawContext.fillStyle = "#00FF00";
+    } else if(speed < 0) {
+        drawContext.fillStyle = "#FF0000";
+    } else {
+        drawContext.fillStyle = "#FFFFFF";
+    }
+
     rectangle(x - wheelHalfLength, y - wheelHalfWidth,
         x + wheelHalfLength, y + wheelHalfWidth);
+
+    drawContext.strokeStyle = "#FF00FF";
+    drawContext.beginPath();
+    drawContext.moveTo(x + wheelHalfLength, y - wheelHalfWidth);
+    drawContext.lineTo(x + wheelHalfLength, y + wheelHalfWidth);
+    drawContext.stroke();
+
     rotate(x, y, -angle);
 }
 
@@ -174,19 +194,19 @@ function connect() {
                 for(let value of values) {
                     let valueData = value.split("*");
 
-                    if(valueData[1] === "opn_drivetrain_front_right_drive") {
+                    if(valueData[1] === "opn_drivetrain_front_right_speed") {
                         frRequestedMovement = new Vector(parseFloat(valueData[2]), frRequestedMovement.angle);
                     }
 
-                    if(valueData[1] === "opn_drivetrain_front_left_drive") {
+                    if(valueData[1] === "opn_drivetrain_front_left_speed") {
                         flRequestedMovement = new Vector(parseFloat(valueData[2]), flRequestedMovement.angle);
                     }
 
-                    if(valueData[1] === "opn_drivetrain_back_left_drive") {
+                    if(valueData[1] === "opn_drivetrain_back_left_speed") {
                         blRequestedMovement = new Vector(parseFloat(valueData[2]), blRequestedMovement.angle);
                     }
 
-                    if(valueData[1] === "opn_drivetrain_back_right_drive") {
+                    if(valueData[1] === "opn_drivetrain_back_right_speed") {
                         brRequestedMovement = new Vector(parseFloat(valueData[2]), brRequestedMovement.angle);
                     }
 

@@ -48,13 +48,16 @@ class Vector extends Point {
                 val2 = cleanAngle(val2);
                 let angle = toRadians(val2);
                 super(Math.cos(angle) * val1, Math.sin(angle) * val1);
+                this.magnitude = val1;
                 this.angle = val2;
             }
         } else {
             super(val1.x, val1.y);
         }
 
-        this.magnitude = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        if(this.magnitude === undefined) {
+            this.magnitude = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        }
         if(this.angle === undefined) {
             this.angle = toDegrees(Math.atan2(this.y, this.x));
         }
