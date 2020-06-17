@@ -9,21 +9,14 @@ targetCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
-}
 
-allprojects {
-    repositories {
-        flatDir{
-            dirs '../jar-files'
-        }
-        maven {
-            url 'https://jitpack.io'
-        }
+    maven {
+        url 'https://jitpack.io'
     }
 }
 
 dependencies {
-    implementation 'com.github.team1619:uacr-robot-core:2020.6.0.0'
+    implementation 'com.github.team1619:uacr-robot-core:master-SNAPSHOT'
 
     implementation (group: 'com.google.guava', name: 'guava', version: '25.1-jre')
 }
