@@ -146,16 +146,20 @@ function updateModule(current, requested) {
 }
 
 function sendValue(name, value, selected) {
-    let key = name + "-" + selected;
-    value = Math.round(value);
-    if(lastValues[key] !== value) {
-        if (selected !== undefined) {
-            socket.send(new UrlFormData().append("request", "change_value").append("type", "vector").append("name", name).append("value", value).append("selected", selected).toString());
-        } else {
-            socket.send(new UrlFormData().append("request", "change_value").append("type", "numeric").append("name", name).append("value", value).toString());
+    try {
+        let key = name + "-" + selected;
+        value = Math.round(value);
+        if (lastValues[key] !== value) {
+            if (selected !== undefined) {
+                socket.send(new UrlFormData().append("request", "change_value").append("type", "vector").append("name", name).append("value", value).append("selected", selected).toString());
+            } else {
+                socket.send(new UrlFormData().append("request", "change_value").append("type", "numeric").append("name", name).append("value", value).toString());
+            }
         }
+        lastValues[key] = value;
+    } catch (e) {
+        console.log(e);
     }
-    lastValues[key] = value;
 }
 
 //Code to create, maintain, and reopen a connection with the server in the robot code
@@ -259,13 +263,11 @@ setInterval(() => {
     let robotTorque = moduleTorque(frPosition, frMovement) + moduleTorque(flPosition, flMovement) +
         moduleTorque(blPosition, blMovement) + moduleTorque(brPosition, brMovement);
 
-    robotAngle += robotTorque
+    robotAngle += robotTorque;
 
-    robotAngle = cleanAngle(robotAngle)
+    robotAngle = cleanAngle(robotAngle);
 
     sendValue("ipv_navx", Math.round(robotAngle), "angle");
-
-    lastRobotAngle = robotAngle
 
     robotMovement = new Vector(robotMovement.magnitude, robotMovement.angle + robotAngle);
     robotMovement = new Vector(new Point(robotMovement.x, -robotMovement.y))
