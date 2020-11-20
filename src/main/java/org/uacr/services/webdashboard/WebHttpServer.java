@@ -27,6 +27,10 @@ public class WebHttpServer {
 				if (e.getRequestURI().getPath().contains("css") || e.getRequestURI().getPath().contains("ttf")) {
 					e.getResponseHeaders().add("content-type", "text/css");
 				}
+				if (e.getRequestURI().getPath().contains("js")) {
+					e.getResponseHeaders().add("content-type", "text/javascript");
+				}
+				e.getResponseHeaders().add("x-frame-options", "SAMEORIGIN");
 
 				fullWrite(e, readFile(e.getRequestURI().getPath().split("/pages/", 2)[1]));
 
