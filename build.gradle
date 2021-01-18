@@ -18,5 +18,15 @@ repositories {
 dependencies {
     implementation 'com.github.team1619:uacr-robot-core:master-SNAPSHOT'
 
-    implementation (group: 'com.google.guava', name: 'guava', version: '25.1-jre')
+    implementation 'com.google.guava:guava:25.1-jre'
+}
+
+jar {
+    from {
+        if (configurations.find { it.name == 'dev' }) {
+            configurations.runtimeClasspath.filter { (!it.path.contains('com.github.team1619')) } .collect { it.isDirectory() ? it : zipTree(it) }
+        } else {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
 }
